@@ -1,0 +1,114 @@
+
+
+Enunciado: Sistema de Gerenciamento de Equipamentos para Laboratório de Robótica
+
+Contexto:
+	Você deve desenvolver um sistema em C# para gerenciar equipamentos em um laboratório de robótica. 
+	O sistema utiliza herança para modelar diferentes categorias de equipamentos e interfaces para implementar funcionalidades críticas como calibração e verificação de segurança.
+
+
+Requisitos Técnicos:
+	Interface ICalibravel:
+
+		Método bool Calibrar(double precisaoDesejada):
+			Retorna true se a calibração atingir a precisão desejada.
+			Registra data/hora da última calibração.
+
+
+
+Interface IVerificavel:
+
+	Método bool VerificarSeguranca():
+		Retorna true se o equipamento atende a todos os protocolos de segurança.
+		Atualiza o status de certificação.
+
+
+Classe Abstrata Equipamento:
+
+	Propriedades:
+		string Identificacao, string Descricao, DateTime DataFabricacao,
+		StatusEquipamento Status (enum: Operacional, Manutencao, Desativado).
+
+	Construtor que inicializa propriedades básicas.
+
+	Método abstrato void ExecutarTeste().
+
+
+Classes Derivadas:
+
+	RoboIndustrial (herda Equipamento, implementa ICalibravel):
+
+	Propriedades:
+		double PrecisaoAtual, int CargaMaximaKg.
+
+	Implementa Calibrar: 
+		Ajusta PrecisaoAtual e 
+		registra data.
+
+	(Sucesso se PrecisaoAtual >= precisaoDesejada).
+
+	ExecutarTeste(): Simula ciclo de trabalho (exibe mensagem específica).
+
+	SistemaSensorico (herda Equipamento, implementa IVerificavel):
+
+
+	Propriedades:
+		bool CertificacaoSeguranca, int SensoresAtivos.
+
+	Implementa VerificarSeguranca:
+		Atualiza CertificacaoSeguranca se SensoresAtivos >= 3.
+
+	ExecutarTeste(): Realiza varredura de sensores (exibe diagnóstico).
+
+
+
+Classe RelatorioManutencao:
+
+	Método void GerarRelatorio(List<Equipamento> equipamentos):
+
+	Para cada equipamento:
+
+		plaintext
+		[Identificação] | Status: [Status] | Última Calibração: [Data] (se aplicável)
+		Destaca equipamentos com status Manutencao.
+
+
+
+Tratamento de Exceções:
+
+	Custom Exception PrecisaoInvalidaException para falhas em Calibrar.
+
+	Validação de dados críticos (ex: precisaoDesejada > 0).
+
+
+
+Menu Interativo:
+	1. Registrar Robô Industrial
+	2. Registrar Sistema Sensorial
+	3. Calibrar Equipamento
+	4. Verificar Segurança
+	5. Executar Teste em Equipamento
+	6. Gerar Relatório de Manutenção
+	7. Sair
+
+
+
+Operações:
+
+	Registrar equipamentos (coletar dados via console).
+
+	Selecionar equipamento por ID para operações (3-5).
+
+	Em Calibrar: Solicitar precisão desejada e mostrar resultado.
+
+	Em VerificarSeguranca: Exibir se certificação foi obtida.
+
+	Em ExecutarTeste: Chamar método polimórfico ExecutarTeste().
+
+
+
+Exemplo de Saída do Relatório:
+
+	=== RELATÓRIO DE MANUTENÇÃO ===
+	RB-205 | Status: Operacional | Última Calibração: 15/05/2025 14:30
+	SENS-77 | Status: Manutencao | Certificação: NÃO APROVADA

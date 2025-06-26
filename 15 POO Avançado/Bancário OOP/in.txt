@@ -1,0 +1,120 @@
+
+Enunciado: Sistema Bancário com Gestão de Investimentos e Risco de Crédito
+
+	Desenvolva um sistema de gerenciamento bancário que implemente os seguintes componentes:
+
+		Hierarquia de Contas Bancárias
+
+		ContaBancaria (classe abstrata)
+
+
+	Propriedades:	Numero (readonly), 
+					Agencia, 
+					Titular (Cliente), 
+					Saldo (protegido), 
+					HistoricoTransacoes (lista protegida)
+
+
+	Métodos abstratos: CalcularRendimentoMensal(), AplicarTaxaManutencao()
+
+	Métodos concretos: Depositar(decimal valor), Sacar(decimal valor), ExibirExtrato()
+
+
+Classes Especializadas
+
+	ContaCorrente : ContaBancaria
+
+
+Implementa taxa de manutenção diferenciada e cheque especial
+
+	ContaInvestimento : ContaBancaria
+
+
+Implementa estratégia de investimento usando o padrão Strategy
+
+	ContaPoupancaPremium : ContaPoupanca (herança multinível)
+
+
+Adiciona benefícios exclusivos para clientes premium
+
+	Gestão de Clientes
+
+	Cliente (classe base abstrata)
+
+		ClientePessoaFisica e 
+		ClientePessoaJuridica (herança com especialização)
+
+	Propriedade polimórfica LimiteCredito calculada diferentemente para cada tipo
+
+	Sistema de Investimentos (Padrão Strategy)
+
+	Interface IEstrategiaInvestimento
+
+	Método decimal CalcularRentabilidade(decimal saldo)
+
+		Implementações: 
+			InvestimentoConservador, 
+			InvestimentoModerado, 
+			InvestimentoAgressivo
+
+	Análise de Risco (Padrão Factory Method)
+
+	FabricaAnaliseRisco
+
+	Método fábrica IAnaliseRisco CriarAnaliseRisco(TipoCliente tipo)
+
+	IAnaliseRisco com implementações: 
+		AnaliseRiscoConservadora, 
+		AnaliseRiscoModerada
+
+
+Funcionalidades:
+
+	Transferências entre contas com verificação de limites
+
+	Aplicação automática de taxas e rendimentos via método template
+
+	Sistema de notificações por email/SMS usando eventos/delegates
+
+	Persistência em JSON (serialização/deserialização)
+
+	Gerenciamento de relacionamento com clientes (CRUD completo)
+
+
+
+Regras de Negócio Complexas:
+
+	Cálculo dinâmico de limites de crédito baseado em score
+
+	Rentabilidade variável conforme perfil de investimento
+
+	Taxas diferenciadas para PJ vs PF
+
+	Validação de transações com tratamento de exceções customizadas
+
+
+
+Requisitos Técnicos:
+
+	Encapsulamento rigoroso (modificadores de acesso adequados)
+
+	Polimorfismo em cálculos financeiros
+
+	Princípio SOLID (especialmente Dependency Inversion)
+
+	Tratamento de exceções customizadas
+
+	Uso de coleções genéricas e LINQ
+
+	Serialização JSON das entidades
+
+
+Desafio Adicional:
+
+	Implemente um módulo de simulação de investimentos que permita:
+
+	Projeções com diferentes estratégias
+
+	Análise comparativa de risco
+
+	Geração de relatórios em formato texto
