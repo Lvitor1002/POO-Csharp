@@ -6,6 +6,8 @@ cadastre-os em uma lista única e que mantenha também nesta lista separados os 
 No final, mostre os valores pares e ímpares em ordem crescente.
 */
 
+AQUI
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

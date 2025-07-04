@@ -1,107 +1,88 @@
-﻿
+﻿using System;
+using System.Linq;
+
 
 /*
-Faça um programa que ajude um jogador da MEGA SENA a criar palpites.
-O programa vai perguntar quantos jogos serão gerados e vai sortear 6 números entre 1 e 60 para cada jogo, 
-cadastrando tudo em uma lista composta.
+Crie um programa que declare uma matriz de dimensão 3x3 e preencha com valores lidos pelo teclado. 
+No final, mostre a matriz na tela, com a formatação correta. mostrando no final: 
+    A) A soma de todos os valores pares digitados.
+    B) A soma dos valores da terceira coluna.
+    C) O maior valor da segunda linha.
 */
 
-using System;
-
-class Treino
+namespace TREINO
 {
-    static void Main()
+    class Program
     {
-        var matriz = Leitura(); 
-        var (soma_par, soma_valores_terceira_coluna, maior_valor_segunda_linha) = Calculos(matriz);
-        Exibir(soma_par, soma_valores_terceira_coluna, maior_valor_segunda_linha, matriz);
-    }
-    static int[,] Leitura()
-    {
-        var matriz = new int[3,3];
-        int valor;
-
-        Console.WriteLine(">Preencha abaixo: ");
-        for(int l = 0; l<3; l++)
+        static void Main()
         {
-            for(int c = 0; c < 3; c++)
-            {
-                while (true)
-                {
-                    Console.Write($"[{l+1},{c+1}]ª: ");
-                    string v = Console.ReadLine();
+            Exibir();
+        }
+        public static int[,] Leitura()
+        {
+            var matriz = new int[3, 3];
+            int valor;
 
-                    if(int.TryParse(v, out valor) && valor >= 0)
+            Console.Write("Digite 9 números abaixo: \n");
+            for(int l = 0; l < 3; l++)
+            {
+                for(int c = 0; c < 3; c++)
+                {
+                    while (true)
                     {
-                        matriz[l, c] = valor;
+                        Console.Write($"[{l + 1},{c + 1}]ª: ");
+                        string v = Console.ReadLine().Trim();
+                        if(!int.TryParse(v, out valor) || valor < 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Entrada inválida. Digite um valor 'inteiro' maior ou igual a zero!");
+                            continue;
+                        }
+                        matriz[l,c] = valor;
                         break;
                     }
-                    else
-                    {
-                        Console.Clear();
-                        Console.WriteLine(">Entrada inválida. Digite um número 'inteiro' e positivo!");
-                    }
                 }
             }
+            return matriz;
         }
-        return matriz;
-    }
-    static (int soma_par, int soma_valores_terceira_coluna, int maior_valor_segunda_linha) Calculos(int[,] matriz)
-    {
-        int soma_par = 0, soma_valores_terceira_coluna = 0;
-
-        int maior_valor_segunda_linha = int.MinValue;
-
-        //A soma de todos os valores pares digitados
-        for (int l = 0; l < matriz.GetLength(0); l++)
+        public static void Calculos(int[,] matriz)
         {
-            for (int c = 0; c < matriz.GetLength(1); c++)
-            {
-                if (matriz[l,c] % 2 == 0)
-                {
-                    soma_par += matriz[l, c];
-                }
-                
+            var todosElementos = matriz.Cast<int>();
 
-                //A soma dos valores da terceira coluna.
-                if (c == 2)
-                {
-                    soma_valores_terceira_coluna += matriz[l, c];
-                }
+            //A) A soma de todos os valores pares digitados.
+            var somaTodos = todosElementos.Where(x => x % 2 == 0).Sum();
 
-                //O maior valor da segunda linha.
-                if(l == 1)
-                {
-                    if (matriz[l,c] > maior_valor_segunda_linha)
-                    {
-                        maior_valor_segunda_linha = matriz[l, c];
-                    }
-                }
-            }
+            //B) A soma dos valores da terceira coluna.
+            var somaValoresTerceiraC = Enumerable.Range(0, matriz.GetLength(0))
+                .Select(l => matriz[l, 2])
+                .Sum();
+
+            //C) O maior valor da segunda linha.
+            var maiorValorSegundaL = Enumerable.Range(0, matriz.GetLength(1))
+                .Select(c => matriz[1, c])
+                .Max();
+
+            Console.WriteLine($"A soma de todos os valores pares digitados: {somaTodos:F0}\n\n" +
+                $"A soma dos valores da terceira coluna: {somaValoresTerceiraC:F0}\n\n" +
+                $"O maior valor da segunda linha: {maiorValorSegundaL:F0}\n\n");
+
         }
-        return (soma_par, soma_valores_terceira_coluna, maior_valor_segunda_linha);
-    }
-    static void Exibir(int soma_par, int soma_valores_terceira_coluna, int maior_valor_segunda_linha, int[,] matriz)
-    {
-        Console.Clear();
-        Console.WriteLine("\n-=-=-=-=-=-=- Matriz -=-=-=-=-=-=-\n");
-
-        for (int l = 0; l < 3; l++)
+        public static void Exibir()
         {
-            Console.Write("|");
-            for (int c = 0; c < 3; c++)
-            {
-                Console.Write($"{matriz[l, c],3} | ");
-            }
-            Console.WriteLine();
-        }
+            var matriz = Leitura();
+            Console.Clear();
+            Console.WriteLine("\n-=-=-=-=-=-=- Matriz -=-=-=-=-=-=-\n");
 
-        Console.WriteLine("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
-        Console.WriteLine(soma_par > 0 ? $"> Soma dos números pares: {soma_par}" : "> Sem valores pares!\n");
-        Console.WriteLine($"> Soma dos números da terceira coluna: {soma_valores_terceira_coluna}\n");
-        Console.WriteLine($"> Maior número da segunda linha: {maior_valor_segunda_linha}");
-        Console.WriteLine("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+            for (int l = 0; l < 3; l++)
+            {
+                Console.Write("|");
+                for (int c = 0; c < 3; c++)
+                {
+                    Console.Write($"{matriz[l,c],3}  |");
+                }
+                Console.WriteLine("\n");
+            }
+            Calculos(matriz);
+        }
     }
 }
-
-
